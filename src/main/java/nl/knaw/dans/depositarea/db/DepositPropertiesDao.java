@@ -13,28 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.knaw.dans.depositarea;
+package nl.knaw.dans.depositarea.db;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.dropwizard.Configuration;
-import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.hibernate.AbstractDAO;
+import nl.knaw.dans.depositarea.core.DepositProperties;
+import org.hibernate.SessionFactory;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
-public class DdDepositAreaConfiguration extends Configuration {
+public class DepositPropertiesDao extends AbstractDAO<DepositProperties> {
 
-    @Valid
-    @NotNull
-    private DataSourceFactory database = new DataSourceFactory();
-
-    @JsonProperty("database")
-    public DataSourceFactory getDataSourceFactory() {
-        return database;
+    public DepositPropertiesDao(SessionFactory sessionFactory) {
+        super(sessionFactory);
     }
 
-    @JsonProperty("database")
-    public void setDataSourceFactory(DataSourceFactory dataSourceFactory) {
-        this.database = dataSourceFactory;
+    public DepositProperties save(DepositProperties p) {
+        return persist(p);
+    }
+
+    public Optional<DepositProperties> findById(String id) {
+        return Optional.ofNullable(get(id));
     }
 }

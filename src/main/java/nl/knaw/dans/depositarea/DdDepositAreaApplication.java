@@ -13,18 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package nl.knaw.dans.depositarea;
 
 import io.dropwizard.Application;
+import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import nl.knaw.dans.depositarea.core.DepositProperties;
+import nl.knaw.dans.depositarea.db.DepositPropertiesDao;
+import nl.knaw.dans.depositarea.resources.DepositPropertiesResource;
 
 public class DdDepositAreaApplication extends Application<DdDepositAreaConfiguration> {
 
     public static void main(final String[] args) throws Exception {
         new DdDepositAreaApplication().run(args);
     }
+
+    private final HibernateBundle<DdDepositAreaConfiguration> hibernateBundle = new HibernateBundle<DdDepositAreaConfiguration>(DepositProperties.class) {
+
+        @Override
+        public DataSourceFactory getDataSourceFactory(DdDepositAreaConfiguration configuration) {
+            return configuration.getDataSourceFactory();
+        }
+    };
 
     @Override
     public String getName() {
@@ -33,12 +45,13 @@ public class DdDepositAreaApplication extends Application<DdDepositAreaConfigura
 
     @Override
     public void initialize(final Bootstrap<DdDepositAreaConfiguration> bootstrap) {
-        // TODO: application initialization
+        bootstrap.addBundle(hibernateBundle);
     }
 
     @Override
     public void run(final DdDepositAreaConfiguration configuration, final Environment environment) {
-
+        final DepositPropertiesDao dao = new DepositPropertiesDao(hibernateBundle.getSessionFactory());
+        environment.jersey().register(new DepositPropertiesResource(dao));
     }
 
 }

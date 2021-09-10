@@ -13,28 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.knaw.dans.depositarea;
+package nl.knaw.dans.depositarea.core;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.dropwizard.Configuration;
-import io.dropwizard.db.DataSourceFactory;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+@Entity
+@Table(name = "deposits")
+public class DepositProperties {
 
-public class DdDepositAreaConfiguration extends Configuration {
+    @Id
+    private String id;
 
-    @Valid
-    @NotNull
-    private DataSourceFactory database = new DataSourceFactory();
-
-    @JsonProperty("database")
-    public DataSourceFactory getDataSourceFactory() {
-        return database;
+    public String getId() {
+        return id;
     }
 
-    @JsonProperty("database")
-    public void setDataSourceFactory(DataSourceFactory dataSourceFactory) {
-        this.database = dataSourceFactory;
+    public void setId(String id) {
+        this.id = id;
     }
 }

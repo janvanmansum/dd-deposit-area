@@ -1,9 +1,0 @@
-#
-# Module configuration file
-#
-# Please, modify the configuration below to match your environment. Also, delete and/or modify
-# this description.
-
-server:
-  type: default
-  maxThreads: 1024
