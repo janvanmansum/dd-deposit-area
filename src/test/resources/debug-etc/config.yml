@@ -1,0 +1,17 @@
+#
+# Module configuration file
+#
+# Please, modify the configuration below to match your environment.
+# Also, delete and/or modify this description.
+
+logging:
+  level: INFO
+  loggers:
+    "dans.knaw.nl":
+      level: DEBUG
+      additive: false
+  appenders:
+    - type: console
+    - type: file
+      archive: false
+      currentLogFilename: data/dd-deposit-area.log
